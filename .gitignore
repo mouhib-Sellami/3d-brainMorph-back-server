@@ -1,0 +1,9 @@
+__pycache__
+.env
+env
+*.sqlite3
+*.sqlite
+static
+static/**/*
+logs
+logs/**/*
