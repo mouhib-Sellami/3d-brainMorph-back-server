@@ -63,6 +63,11 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 25,
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'brainMorph_back_server.auth.BearerTokenAuth.BearerTokenAuth',
+    ]
+}
 
 CORS_ALLOW_HEADERS = [
     "accept",
@@ -99,6 +104,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'brain_morph_server.middlewares.PermissionMiddleWare.PermissionMiddleWare',
+
 ]
 
 TASK_TYPES = {}

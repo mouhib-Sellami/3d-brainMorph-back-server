@@ -3,6 +3,7 @@ from . import models
 # Register your models here.
 list_page = 20
 
+
 class UserAdmin(admin.ModelAdmin):
     list_display = [
         "id",
@@ -19,5 +20,31 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ["created_at"]
     list_per_page = list_page
 
-admin.site.register(models.User, UserAdmin)
 
+class AppPermissionsAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "label",
+        "created_at",
+        "updated_at",
+    ]
+    ordering = ["created_at"]
+    list_per_page = list_page
+
+
+class RoleAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "name",
+        "slug",
+        "active",
+        "created_at",
+        "updated_at",
+    ]
+    ordering = ["created_at"]
+    list_per_page = list_page
+
+
+admin.site.register(models.User, UserAdmin)
+admin.site.register(models.Role, RoleAdmin)
+admin.site.register(models.AppPermission, AppPermissionsAdmin)

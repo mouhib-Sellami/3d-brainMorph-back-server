@@ -17,38 +17,6 @@ CONTENT_TYPE = 'application/json'
 
 class AuthViewSet(GenericViewSet):
 
-    # @action(detail=False, methods=['POST'], url_path='signup', serializer_class=serializers.UserSignupViewSerializer)
-    # def signup_(self, request):
-    #     try:
-    #         data: dict = request.data
-    #         org_details = data.pop("organization") if data.get(
-    #             'organization') else None
-    #         user_data = data
-    #         user = serializers.UserSignupSerializer(data=user_data)
-    #         user.is_valid(raise_exception=True)
-    #         user: models.User = user.save()
-    #         user.set_password(request.data['password'])
-    #         user.save(update_fields=['password'])
-    #         login(request, user)
-    #         token = Token.objects.get_or_create(user=user)
-    #         return HttpResponse(
-    #             json.dumps(
-    #                 {
-    #                     'token': token[0].key,
-    #                     'user': serializers.UserSerializer(user).data,
-    #                 }
-    #             ),
-    #             status=status.HTTP_200_OK,
-    #             content_type=CONTENT_TYPE,
-    #         )
-    #     except ValidationError as v:
-    #         logger.exception(str(v))
-    #         return HttpResponse(json.dumps(v.__dict__), status=status.HTTP_422_UNPROCESSABLE_ENTITY, content_type=CONTENT_TYPE)
-
-    #     except Exception as e:
-    #         logger.exception(str(e))
-    #         return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, content_type=CONTENT_TYPE)
-
     @action(detail=False, methods=['POST'], url_path='login', serializer_class=serializers.UserLoginSerializer)
     def login_(self, request):
         try:
@@ -62,6 +30,8 @@ class AuthViewSet(GenericViewSet):
                         {
                             'token': token[0].key,
                             'user': serializers.UserSerializer(user).data,
+                            'permissions': serializers.AppPermissionSerializer(user.role.permissions.all(), many=True).data,
+
                         }
                     ),
                     status=status.HTTP_200_OK,
@@ -96,6 +66,8 @@ class AuthViewSet(GenericViewSet):
                     {
                         'token': request.auth.key,
                         'user': serializers.UserSerializer(request.user).data,
+                        'permissions': serializers.AppPermissionSerializer(request.user.role.permissions.all(), many=True).data,
+
                     }
                 ),
                 status=status.HTTP_200_OK,
