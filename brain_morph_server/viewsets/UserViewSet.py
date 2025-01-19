@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
 
-logger = logging.getLogger('sky_forge')
+logger = logging.getLogger('brain_morph')
 CONTENT_TYPE = 'application/json'
 
 

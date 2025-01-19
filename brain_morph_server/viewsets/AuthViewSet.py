@@ -11,7 +11,7 @@ from rest_framework import status
 from brain_morph_server import models
 from rest_framework.exceptions import ValidationError
 
-logger = logging.getLogger('sky_forge')
+logger = logging.getLogger('brain_morph')
 CONTENT_TYPE = 'application/json'
 
 

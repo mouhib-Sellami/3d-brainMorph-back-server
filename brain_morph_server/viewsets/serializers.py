@@ -59,3 +59,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
             'is_active',
             'role'
         )
+
+
+class PatientSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Patient

@@ -4,7 +4,7 @@ from . import serializers
 from rest_framework.permissions import IsAuthenticated
 from brain_morph_server import models
 
-logger = logging.getLogger('sky_forge')
+logger = logging.getLogger('brain_morph')
 
 
 class PermissionViewSet(ReadOnlyModelViewSet):

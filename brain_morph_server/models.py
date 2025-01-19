@@ -103,5 +103,8 @@ class Role(BaseModel):
     def __str__(self) -> str:
         return self.name
 
+
 class Patient(BaseModel):
-    pass
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    folder_name = models.UUIDField(auto_created=True)
