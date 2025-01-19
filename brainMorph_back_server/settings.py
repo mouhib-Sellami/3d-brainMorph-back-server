@@ -14,6 +14,8 @@ from pathlib import Path
 from .logger import LOGGING
 from dotenv import load_dotenv
 import eventlet
+from minio import Minio
+
 eventlet.monkey_patch(os=False)
 
 load_dotenv()
@@ -112,6 +114,11 @@ TASK_TYPES = {}
 TASK_WORKER_CLASS = {
 
 }
+MINIO_CLIENT = Minio(os.getenv("MINIO_HOST"),
+                     access_key=os.getenv("ACCESS_KEY"),
+                     secret_key=os.getenv("SECRET_KEY"),
+                     secure=False
+                     )
 
 ROOT_URLCONF = 'brainMorph_back_server.urls'
 
@@ -181,6 +188,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+MEDIA_URL = "/media/"
 STATIC_FOLDER_NAME = "static"
 
 
@@ -189,21 +198,17 @@ def make_dir_path(path):
         os.mkdir(path)
 
 
-EVENT_STATIC = os.path.join(
-    BASE_DIR, "static", os.getenv("EVENT_RESOURCE_FOLDER", "events_resources")
-)
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-EXPORT_DIR = os.path.join(EVENT_STATIC, "exports")
 
 LOGS = os.path.join(BASE_DIR, 'logs')
 
 make_dir_path(os.path.join(BASE_DIR, "static"))
-make_dir_path(EVENT_STATIC)
-make_dir_path(EXPORT_DIR)
 make_dir_path(LOGS)
+make_dir_path(MEDIA_ROOT)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
