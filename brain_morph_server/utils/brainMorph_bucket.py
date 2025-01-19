@@ -10,7 +10,7 @@ load_dotenv()
 
 MINIO_CLIENT: Minio = settings.MINIO_CLIENT
 BUCKET = os.getenv("MINIO_DEFAULT_BUCKETS")
-print(MINIO_CLIENT.get_presigned_url('GET',BUCKET,'testy'))
+# print(MINIO_CLIENT.get_presigned_url('GET',BUCKET,'testy'))
 found = MINIO_CLIENT.bucket_exists(BUCKET)
 if not found:
     MINIO_CLIENT.make_bucket(BUCKET)
