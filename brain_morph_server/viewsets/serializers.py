@@ -65,3 +65,9 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = models.Patient
+
+
+class PatientCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('first_name', 'last_name', 'birth_date', 'age', 'gender')
+        model = models.Patient

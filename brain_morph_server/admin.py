@@ -47,4 +47,5 @@ class RoleAdmin(admin.ModelAdmin):
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Role, RoleAdmin)
+admin.site.register(models.Patient)
 admin.site.register(models.AppPermission, AppPermissionsAdmin)

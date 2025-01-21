@@ -1,16 +1,29 @@
 import logging
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 from . import serializers
 from rest_framework.permissions import IsAuthenticated
 from brain_morph_server import models
 from brain_morph_server.utils.decorators import has_permission
+from django.http import HttpResponse
+from rest_framework import status
+from django.core.exceptions import ObjectDoesNotExist
+import json
+from brain_morph_server.utils.brainMorph_bucket import upload_single, create_folder
+CONTENT_TYPE = 'application/json'
 
 logger = logging.getLogger('brain_morph')
+
 
 class PatientViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.PatientSerializer
     queryset = models.Patient.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ['list', 'retrieve']:
+            return serializers.PatientSerializer
+        return serializers.PatientCreateSerializer
 
     @has_permission("can_view_patient")
     def list(self, request, *args, **kwargs):
@@ -35,3 +48,22 @@ class PatientViewSet(ModelViewSet):
     @has_permission("can_change_patient")
     def partial_update(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)
+
+    @has_permission("can_change_patient")
+    @action(methods=['POST'], url_path="upload", url_name="upload", detail=True)
+    def upload(self, request, pk=None):
+        try:
+            patient = models.Patient.objects.get(pk=pk)
+            print(patient)
+            create_folder(patient.folder_name)
+            for count, x in enumerate(request.FILES.getlist("files")):
+                upload_single(x, patient.folder_name)
+            patient.has_files = True
+            patient.save(update_fields=['has_files'])
+            
+            return HttpResponse(json.dumps(serializers.PatientSerializer(patient).data), status=status.HTTP_200_OK, content_type=CONTENT_TYPE)
+        except ObjectDoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND, content_type=CONTENT_TYPE)
+        except Exception as e:
+            logger.exception(str(e))
+            return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, content_type=CONTENT_TYPE)

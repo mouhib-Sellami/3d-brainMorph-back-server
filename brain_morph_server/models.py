@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import uuid
 
 # Create your models here.
 
@@ -105,6 +106,20 @@ class Role(BaseModel):
 
 
 class Patient(BaseModel):
+    class Gender(models.TextChoices):
+        male = "Male"
+        female = "Female"
+
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    folder_name = models.UUIDField(auto_created=True)
+    folder_name = models.UUIDField(default=uuid.uuid4, editable=False)
+    birth_date = models.DateField(null=True)
+    age = models.IntegerField(null=True, default=0)
+    gender = models.CharField(
+        max_length=255, default="", null=True, choices=Gender.choices)
+    is_generated = models.BooleanField(default=False)
+    has_files = models.BooleanField(default=False)
+    brain_file_path = models.TextField(null=True, default="")
+    brain_transparent_file_path = models.TextField(null=True, default="")
+    tumor_file_path = models.TextField(null=True, default="")
+    nii_file_path = models.TextField(null=True, default="")
