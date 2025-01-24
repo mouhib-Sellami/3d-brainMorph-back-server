@@ -43,10 +43,14 @@ class Engine():
         [self.queue.put(self.worker_class.get_worker(task=task, queue=self.queue))
          for task in list(self.task_model.objects.filter(task_type=self.task_type.name, is_done=False, status=Status.pending, attempts__lte=F('max_attempts')).order_by('created_at').all())]
 
-    def add_task(self, job: JobBaseModal = None, task: Task = None, new: bool = True,delete_when_finish = True):
-        if new:
+    def add_task(self, job: JobBaseModal = None, task: Task = None, new: bool = True, delete_when_finish=True):
+        if new and task != None:
             self.queue.put(self.worker_class.get_worker(
-                task=self.task_model.objects.create(job_payload=job, task_type=self.task_type.name,delete_when_finish=delete_when_finish), queue=self.queue))
+                task=self.task_model.objects.create(job_payload=task.job_payload, task_type=self.task_type.name, delete_when_finish=delete_when_finish), queue=self.queue))
+
+        if new and task == None:
+            self.queue.put(self.worker_class.get_worker(
+                task=self.task_model.objects.create(job_payload=job, task_type=self.task_type.name, delete_when_finish=delete_when_finish), queue=self.queue))
         else:
             task.task_type = self.task_type.name
             task.is_done = False
@@ -69,7 +73,7 @@ class Engine():
         self.queue.join()
         self.queue_thread.join()
         logger.info(f"{self.engine_name} - {str(self.engine_id)} is stop")
-    
+
     def get_running_task(self):
         return self.running_task
 

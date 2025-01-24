@@ -8,6 +8,8 @@ from brain_morph_server.viewsets.RoleViewSet import RoleViewSet
 from brain_morph_server.viewsets.UserViewSet import UserViewSet
 from brain_morph_server.viewsets.PatientViewSet import PatientViewSet
 
+from . import views
+
 router = SimpleRouter()
 router.register(r"auth", AuthViewSet, basename="auth")
 router.register(r"permissions", PermissionViewSet, basename="permission")

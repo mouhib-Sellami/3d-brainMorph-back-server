@@ -51,17 +51,16 @@ def download_folder(folder_name):
             settings.MEDIA_ROOT)
         objects = MINIO_CLIENT.list_objects(
             BUCKET, prefix=folder_name, recursive=True)
-
         temp_dir = os.path.join(tmp_folder_path, str(uuid4()))
         os.makedirs(temp_dir, exist_ok=True)
         for obj in objects:
-            object_name = obj.object_name
-            file_path = os.path.join(temp_dir, object_name)
+            file_path = os.path.join(temp_dir, os.path.relpath(obj.object_name, folder_name))
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
-            MINIO_CLIENT.fget_object(BUCKET, object_name, file_path)
-            print(f"Downloaded {object_name}")
-
+            if not obj.is_dir:
+                MINIO_CLIENT.fget_object(BUCKET, obj.object_name, file_path)
+                print(f"Downloaded {obj.object_name} to {file_path}")
+        print(temp_dir)
     except S3Error as err:
         print(f"Error occurred: {err}")
-
-    return tmp_folder_path
+        temp_dir = None
+    return temp_dir

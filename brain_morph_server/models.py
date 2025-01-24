@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 import uuid
+from engine import models as engineModels
+from django.conf import settings
 
 # Create your models here.
 
@@ -123,3 +125,8 @@ class Patient(BaseModel):
     brain_transparent_file_path = models.TextField(null=True, default="")
     tumor_file_path = models.TextField(null=True, default="")
     nii_file_path = models.TextField(null=True, default="")
+    is_processing = models.BooleanField(default=False)
+
+class JobClientArtifact(engineModels.JobBaseModal):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
+    download_folder_path = models.TextField(blank=True, default="")

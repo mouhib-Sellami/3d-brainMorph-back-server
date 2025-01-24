@@ -30,7 +30,6 @@ def restart_task(modeladmin, request, queryset):
             engine.load_tasks()
     messages.add_message(request, messages.INFO, "engine loaded queues")
 
-print(TASK_TYPE)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ['id', 'job_payload', 'task_type',
                     'status', 'created_at', 'updated_at']
@@ -42,11 +41,10 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 class FailedTaskAdmin(admin.ModelAdmin):
-    list_display = ['id', 'task__job', 'exception_name', 'exception',
+    list_display = ['id', 'task', 'exception_name', 'exception',
                     'created_at', 'updated_at']
     list_per_page = list_page
 
 
 admin.site.register(models.Task, TaskAdmin)
-admin.site.register(models.FailedTask)
-admin.site.register(models.JobBaseModal)
+admin.site.register(models.FailedTask,FailedTaskAdmin)

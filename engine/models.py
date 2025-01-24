@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from polymorphic.models import PolymorphicModel
-from uuid import uuid4
+import uuid
 from engine.conf import TASK_TYPE
 # Create your models here.
 
@@ -25,14 +25,14 @@ class Status(models.TextChoices):
 
 
 class JobBaseModal(PolymorphicModel, BaseModel):
-    uuid = models.UUIDField(auto_created=True, null=True,blank=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, null=True,editable=False)
 
     def __str__(self) -> str:
         return str(self.uuid)
 
 
 class Task(BaseModel):
-    uuid = models.UUIDField(auto_created=True, null=True,blank=True)
+    uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, null=True,editable=False)
     attempts = models.IntegerField(default=0)
     max_attempts = models.IntegerField(default=3)
     executed_at = models.DateTimeField(null=True, blank=True, default=None)
@@ -53,6 +53,9 @@ class Task(BaseModel):
         max_length=255,
         null=True, blank=True
     )
+    
+    def __str__(self) -> str:
+        return str(self.uuid) + " | " + self.job_payload.__str__()
 
 
 class FailedTask(BaseModel):
