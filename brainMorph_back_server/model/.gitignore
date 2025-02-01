@@ -1,0 +1,7 @@
+.tif
+.keras
+.ipynb_checkpoints
+model_v2.keras
+*.keras
+*.ipynb
+*.tif

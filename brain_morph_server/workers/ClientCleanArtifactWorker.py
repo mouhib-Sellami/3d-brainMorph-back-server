@@ -1,10 +1,6 @@
 from engine.conf.Worker import Worker
 from engine.models import FailedTask, Task
 from brain_morph_server import models
-from django.conf import settings
-import time
-from brain_morph_server import views
-from brain_morph_server.utils import brainMorph_bucket
 import os
 import shutil
 import time

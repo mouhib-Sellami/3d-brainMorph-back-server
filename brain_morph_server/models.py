@@ -122,7 +122,7 @@ class Patient(BaseModel):
     is_generated = models.BooleanField(default=False)
     has_files = models.BooleanField(default=False)
     brain_file_path = models.TextField(null=True, default="")
-    brain_transparent_file_path = models.TextField(null=True, default="")
+    brain_combine_file_path = models.TextField(null=True, default="")
     tumor_file_path = models.TextField(null=True, default="")
     nii_file_path = models.TextField(null=True, default="")
     is_processing = models.BooleanField(default=False)

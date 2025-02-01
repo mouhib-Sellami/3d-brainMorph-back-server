@@ -7,3 +7,6 @@ static
 static/**/*
 logs
 logs/**/*
+.ipynb_checkpoints
+*.keras
+*.ipynb

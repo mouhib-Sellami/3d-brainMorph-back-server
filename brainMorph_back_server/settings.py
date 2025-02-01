@@ -111,15 +111,17 @@ MIDDLEWARE = [
 ]
 
 TASK_TYPES = {'download': 'download',
-            #   'process_mask': 'process_mask',  # segmentation / nii image
-            #   'process_tumor': 'process_tumor',  # from nii image
-            #   'process_brain': 'process_brain',  # transparent and the other
+              'process_mask': 'process_mask',  # segmentation / nii image
+              #   'process_tumor': 'process_tumor',  # from nii image
+              'process_brain': 'process_brain',
               'clean': 'clean',  # update bucket and delete temp files
               }
 
 TASK_WORKER_CLASS = {
-    "download":"brain_morph_server.workers.ClientArtifactWorker.ClientArtifactWorker",
-    "clean":"brain_morph_server.workers.ClientCleanArtifactWorker.ClientCleanArtifactWorker",
+    "download": "brain_morph_server.workers.ClientArtifactWorker.ClientArtifactWorker",
+    "process_mask": "brain_morph_server.workers.SegmentationWorker.SegmentationWorker",
+    "process_brain": "brain_morph_server.workers.3DBrainWorker.ThreeDBrainWorker",
+    "clean": "brain_morph_server.workers.ClientCleanArtifactWorker.ClientCleanArtifactWorker",
 }
 
 MINIO_CLIENT = Minio(os.getenv("MINIO_HOST"),
