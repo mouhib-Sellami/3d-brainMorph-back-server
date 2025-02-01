@@ -7,8 +7,6 @@ from brain_morph_server import models
 from brain_morph_server.utils import brainMorph_bucket
 from brainMorph_back_server.socket_handler import sio
 from brain_morph_server.viewsets.serializers import PatientSerializer
-import time
-import psutil
 
 
 class ClientCleanArtifactWorker(Worker):

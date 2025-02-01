@@ -10,6 +10,7 @@ from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 import json
 from brain_morph_server.utils.brainMorph_bucket import upload_single, create_folder
+from brain_morph_server import views
 CONTENT_TYPE = 'application/json'
 
 logger = logging.getLogger('brain_morph')
@@ -59,7 +60,23 @@ class PatientViewSet(ModelViewSet):
                 upload_single(x, patient.folder_name)
             patient.has_files = True
             patient.save(update_fields=['has_files'])
-            
+
+            return HttpResponse(json.dumps(serializers.PatientSerializer(patient).data), status=status.HTTP_200_OK, content_type=CONTENT_TYPE)
+        except ObjectDoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND, content_type=CONTENT_TYPE)
+        except Exception as e:
+            logger.exception(str(e))
+            return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, content_type=CONTENT_TYPE)
+
+    @has_permission("can_change_patient")
+    @action(methods=['POST'], url_path="start-patient", url_name="start-patient", detail=True)
+    def start_patient(self, request, pk=None):
+        try:
+            patient = models.Patient.objects.get(pk=pk)
+            job = models.JobClientArtifact()
+            job.patient = patient
+            job.save()
+            views.engine_download_artifact.add_task(job=job, new=True,delete_when_finish=False)
             return HttpResponse(json.dumps(serializers.PatientSerializer(patient).data), status=status.HTTP_200_OK, content_type=CONTENT_TYPE)
         except ObjectDoesNotExist:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND, content_type=CONTENT_TYPE)

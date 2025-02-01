@@ -1,5 +1,9 @@
+import os
+from dotenv import load_dotenv
 from rest_framework import serializers
 from brain_morph_server import models
+
+load_dotenv()
 
 
 class AppPermissionSerializer(serializers.ModelSerializer):
@@ -62,9 +66,23 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class PatientSerializer(serializers.ModelSerializer):
+    public_tumor = serializers.SerializerMethodField('get_tumor_public_link')
+    public_brain = serializers.SerializerMethodField('get_brain_public_link')
+    public_combined_brain = serializers.SerializerMethodField(
+        'get_combined_brain_public_link')
+
     class Meta:
         fields = '__all__'
         model = models.Patient
+
+    def get_tumor_public_link(self, obj: models.Patient):
+        return os.getenv('MINIO_HOST_PROTOCOL') + os.getenv('MINIO_HOST') + "/" + obj.tumor_file_path
+
+    def get_brain_public_link(self, obj: models.Patient):
+        return os.getenv('MINIO_HOST_PROTOCOL') + os.getenv('MINIO_HOST') + "/" + obj.brain_file_path
+
+    def get_combined_brain_public_link(self, obj: models.Patient):
+        return os.getenv('MINIO_HOST_PROTOCOL') + os.getenv('MINIO_HOST') + "/" + obj.brain_combine_file_path
 
 
 class PatientCreateSerializer(serializers.ModelSerializer):

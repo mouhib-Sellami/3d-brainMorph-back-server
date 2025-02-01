@@ -1,8 +1,11 @@
+import json
 from engine.conf.Worker import Worker
 from engine.models import FailedTask, Task
 from brain_morph_server import models
 from brain_morph_server import views
 from brain_morph_server.utils import brainMorph_bucket
+from brainMorph_back_server.socket_handler import sio
+from brain_morph_server.viewsets.serializers import PatientSerializer
 
 
 class ClientArtifactWorker(Worker):
@@ -25,6 +28,7 @@ class ClientArtifactWorker(Worker):
         patient: models.Patient = job.patient
         patient.is_processing = True
         patient.save(update_fields=['is_processing'])
+        sio.emit('patient_start', json.dumps(PatientSerializer(patient).data))
         folder_name = patient.folder_name
         folder_path = brainMorph_bucket.download_folder(str(folder_name))
         if folder_path:
