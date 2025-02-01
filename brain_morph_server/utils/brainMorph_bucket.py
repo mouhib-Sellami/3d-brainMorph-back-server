@@ -1,13 +1,12 @@
-import tempfile
+import io
 import os
+import tempfile
+from minio import Minio
+from minio.error import S3Error
 from django.conf import settings
 from dotenv import load_dotenv
-from minio import Minio
-import io
-from minio.error import S3Error
-import zipfile
+from datetime import timedelta
 from uuid import uuid4
-import io
 load_dotenv()
 
 MINIO_CLIENT: Minio = settings.MINIO_CLIENT
@@ -24,6 +23,15 @@ else:
 def create_folder(folder_name):
     MINIO_CLIENT.put_object(BUCKET, str(folder_name) +
                             '/', data=io.BytesIO(b''), length=0)
+
+
+def get_public_link(file):
+    return MINIO_CLIENT.get_presigned_url(
+        'GET', BUCKET, file, expires=timedelta(days=7))
+
+
+def upload_single_with_file_path(file_path, file_name, folder_name):
+    MINIO_CLIENT.fput_object(BUCKET, f"{folder_name}/{file_name}", file_path)
 
 
 def upload_single(file, folder_name):
@@ -54,7 +62,8 @@ def download_folder(folder_name):
         temp_dir = os.path.join(tmp_folder_path, str(uuid4()))
         os.makedirs(temp_dir, exist_ok=True)
         for obj in objects:
-            file_path = os.path.join(temp_dir, os.path.relpath(obj.object_name, folder_name))
+            file_path = os.path.join(
+                temp_dir, os.path.relpath(obj.object_name, folder_name))
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             if not obj.is_dir:
                 MINIO_CLIENT.fget_object(BUCKET, obj.object_name, file_path)

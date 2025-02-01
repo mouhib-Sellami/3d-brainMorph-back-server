@@ -54,7 +54,6 @@ class PatientViewSet(ModelViewSet):
     def upload(self, request, pk=None):
         try:
             patient = models.Patient.objects.get(pk=pk)
-            print(patient)
             create_folder(patient.folder_name)
             for count, x in enumerate(request.FILES.getlist("files")):
                 upload_single(x, patient.folder_name)

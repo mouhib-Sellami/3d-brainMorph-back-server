@@ -31,7 +31,7 @@ class SegmentationWorker(Worker):
         parent_folder = task.job_payload.download_folder_path
 
         files = [os.path.join(parent_folder, x) for x in os.listdir(
-            task.job_payload.download_folder_path) if "mask" not in x]
+            task.job_payload.download_folder_path) if "mask" not in x and x.endswith('.tif')]
 
         for f in files:
             brain_morph_model.predict_save_image(f, views.model)

@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from engine.conf.Worker import Worker
 from engine.models import FailedTask, Task
 from brain_morph_server import models
+from brain_morph_server import views
 
 
 class ThreeDBrainWorker(Worker):
@@ -33,10 +34,19 @@ class ThreeDBrainWorker(Worker):
 
         with ThreadPoolExecutor() as executor:
             future = executor.submit(
-                self.visualize_and_color_combined_mesh,
-                nii_file, parent_folder, str(patient.folder_name), patient=patient
+                self.run_job,
+                nii_file, parent_folder, str(patient.folder_name), task
             )
             future.result()
+
+    def run_job(self, file_path, export_path, file_id, task: Task):
+        patient: models.Patient = task.job_payload.patient
+
+        self.visualize_and_color_combined_mesh(
+            file_path, export_path, file_id, patient)
+
+        views.engine_clear_artifact.add_task(
+            task=task, new=True, delete_when_finish=False)
 
     def export_to_gltf(self, mesh, export_path, filename, colors, opacity=1.0):
         vertices = np.array(mesh.vertices, dtype=np.float32)
