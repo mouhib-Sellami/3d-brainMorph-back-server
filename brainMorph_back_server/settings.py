@@ -71,6 +71,11 @@ REST_FRAMEWORK = {
     ]
 }
 
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
+
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
