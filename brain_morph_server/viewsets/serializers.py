@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from rest_framework import serializers
 from brain_morph_server import models
+from engine import models as engineModels
 
 load_dotenv()
 
@@ -89,3 +90,19 @@ class PatientCreateSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('first_name', 'last_name', 'birth_date', 'age', 'gender')
         model = models.Patient
+
+
+class JobSerializer(serializers.ModelSerializer):
+    patient = PatientSerializer()
+
+    class Meta:
+        model = models.JobClientArtifact
+        fields = '__all__'
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    job_payload = JobSerializer()
+
+    class Meta:
+        model = engineModels.Task
+        fields = '__all__'

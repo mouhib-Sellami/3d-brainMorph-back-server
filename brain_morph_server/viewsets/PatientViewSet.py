@@ -76,8 +76,48 @@ class PatientViewSet(ModelViewSet):
             job = models.JobClientArtifact()
             job.patient = patient
             job.save()
-            views.engine_download_artifact.add_task(job=job, new=True,delete_when_finish=False)
+            views.engine_download_artifact.add_task(
+                job=job, new=True, delete_when_finish=False)
             return HttpResponse(json.dumps(serializers.PatientSerializer(patient).data), status=status.HTTP_200_OK, content_type=CONTENT_TYPE)
+        except ObjectDoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND, content_type=CONTENT_TYPE)
+        except Exception as e:
+            logger.exception(str(e))
+            return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, content_type=CONTENT_TYPE)
+
+    @has_permission("can_view_patient")
+    @action(methods=['GET'], url_path="processing-patient", url_name="processing-patient", detail=False)
+    def processing_patient(self, request, pk=None):
+        try:
+            patients = models.Patient.objects.filter(
+                is_processing=True, is_generated=False).all()
+            return HttpResponse(json.dumps(serializers.PatientSerializer(patients, many=True).data), status=status.HTTP_200_OK, content_type=CONTENT_TYPE)
+        except ObjectDoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND, content_type=CONTENT_TYPE)
+        except Exception as e:
+            logger.exception(str(e))
+            return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, content_type=CONTENT_TYPE)
+
+    @has_permission("can_view_patient")
+    @action(methods=['GET'], url_path="pending-patient", url_name="pending-patient", detail=False)
+    def pending_patient(self, request, pk=None):
+        try:
+            patients = models.Patient.objects.filter(
+                is_processing=False, is_generated=False).all()
+            return HttpResponse(json.dumps(serializers.PatientSerializer(patients, many=True).data), status=status.HTTP_200_OK, content_type=CONTENT_TYPE)
+        except ObjectDoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND, content_type=CONTENT_TYPE)
+        except Exception as e:
+            logger.exception(str(e))
+            return HttpResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, content_type=CONTENT_TYPE)
+
+    @has_permission("can_view_patient")
+    @action(methods=['GET'], url_path="processed-patient", url_name="processed-patient", detail=False)
+    def processed_patient(self, request, pk=None):
+        try:
+            patients = models.Patient.objects.filter(
+                is_processing=False, is_generated=True).all()
+            return HttpResponse(json.dumps(serializers.PatientSerializer(patients, many=True).data), status=status.HTTP_200_OK, content_type=CONTENT_TYPE)
         except ObjectDoesNotExist:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND, content_type=CONTENT_TYPE)
         except Exception as e:
