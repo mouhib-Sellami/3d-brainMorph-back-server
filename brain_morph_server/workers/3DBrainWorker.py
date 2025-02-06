@@ -9,6 +9,7 @@ from engine.conf.Worker import Worker
 from engine.models import FailedTask, Task
 from brain_morph_server import models
 from brain_morph_server import views
+from brain_morph_server.workers.rapportUtils import generate_pdf_report
 
 
 class ThreeDBrainWorker(Worker):
@@ -120,6 +121,8 @@ class ThreeDBrainWorker(Worker):
         patient.brain_combine_file_path = os.path.join(
             export_path, brain_3d)
 
+        patient.rapport_file_path = generate_pdf_report(file_id, brain_mesh, tumor_mesh,
+                                                        export_path, patient.folder_name)   
         patient.save(update_fields=[
-                     'brain_combine_file_path', 'tumor_file_path', 'brain_file_path'])
+                     'brain_combine_file_path', 'tumor_file_path', 'brain_file_path', 'rapport_file_path'])
         return (brain_3d, brain_export, tumor_export)

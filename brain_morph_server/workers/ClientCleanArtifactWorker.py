@@ -39,6 +39,11 @@ class ClientCleanArtifactWorker(Worker):
         brainMorph_bucket.upload_single_with_file_path(
             patient.nii_file_path, nii_file_name, patient.folder_name)
 
+        rapport_file_path = patient.rapport_file_path.split(os.sep)[-1]
+
+        brainMorph_bucket.upload_single_with_file_path(
+            patient.rapport_file_path, rapport_file_path, patient.folder_name)
+
         brain_combine_file_name = patient.brain_combine_file_path.split(
             os.sep)[-1]
 
@@ -46,11 +51,15 @@ class ClientCleanArtifactWorker(Worker):
             patient.brain_combine_file_path, brain_combine_file_name, patient.folder_name)
 
         brain_file_name = patient.brain_file_path.split(os.sep)[-1]
+
         brainMorph_bucket.upload_single_with_file_path(
             patient.brain_file_path, brain_file_name, patient.folder_name)
 
         patient.nii_file_path = brainMorph_bucket.BUCKET + \
             "/"+str(patient.folder_name) + "/" + nii_file_name
+
+        patient.rapport_file_path = brainMorph_bucket.BUCKET + \
+            "/"+str(patient.folder_name) + "/" + rapport_file_path
 
         patient.tumor_file_path = brainMorph_bucket.BUCKET + "/"+str(
             patient.folder_name) + "/" + tumor_file_name
@@ -65,7 +74,7 @@ class ClientCleanArtifactWorker(Worker):
         patient.is_generated = True
 
         patient.save(update_fields=['nii_file_path', 'tumor_file_path',
-                     'brain_combine_file_path', 'brain_file_path', 'is_generated', 'is_processing'])
+                     'brain_combine_file_path', 'brain_file_path', 'rapport_file_path', 'is_generated', 'is_processing'])
         sio.emit("patient_complete", json.dumps(
             PatientSerializer(patient).data))
         if os.path.exists(job.download_folder_path):

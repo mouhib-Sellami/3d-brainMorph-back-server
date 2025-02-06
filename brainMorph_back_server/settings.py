@@ -72,8 +72,8 @@ REST_FRAMEWORK = {
 }
 
 GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': True,
+    'all_applications': True,
+    'group_models': True,
 }
 
 CORS_ALLOW_HEADERS = [
@@ -119,6 +119,7 @@ TASK_TYPES = {'download': 'download',
               'process_mask': 'process_mask',  # segmentation / nii image
               #   'process_tumor': 'process_tumor',  # from nii image
               'process_brain': 'process_brain',
+              #   'generate_rapport': 'generate_rapport',
               'clean': 'clean',  # update bucket and delete temp files
               }
 
@@ -126,6 +127,7 @@ TASK_WORKER_CLASS = {
     "download": "brain_morph_server.workers.ClientArtifactWorker.ClientArtifactWorker",
     "process_mask": "brain_morph_server.workers.SegmentationWorker.SegmentationWorker",
     "process_brain": "brain_morph_server.workers.3DBrainWorker.ThreeDBrainWorker",
+    # "generate_rapport": "brain_morph_server.workers.GenerateRapport.GenerateRapport",
     "clean": "brain_morph_server.workers.ClientCleanArtifactWorker.ClientCleanArtifactWorker",
 }
 

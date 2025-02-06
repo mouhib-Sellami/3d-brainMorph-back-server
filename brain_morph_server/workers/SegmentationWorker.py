@@ -57,15 +57,12 @@ class SegmentationWorker(Worker):
             img_path = os.path.join(image_dir, file)
             img = io.imread(img_path)
             grouped_slices[unique_id][file_type].append(img)
-            print("*"*100)
-            print(file)
 
         return grouped_slices
 
     def create_combined_volume(self, brain_slices, mask_slices):
         brain_volume = np.stack(brain_slices, axis=0).astype(np.float32)
         mask_volume = np.stack(mask_slices, axis=0).astype(np.uint8)
-        print(mask_volume.argmax())
         brain_volume = (brain_volume / brain_volume.max()) * 255
         combined_volume = brain_volume.copy()
         combined_volume[mask_volume > 0] = 255
@@ -82,8 +79,6 @@ class SegmentationWorker(Worker):
         os.makedirs(export_path, exist_ok=True)
         full_path = os.path.join(export_path, filename)
         nib.save(nii_img, full_path)
-        print(
-            f"Saved 3D NIfTI file: {full_path} with spacing: x={x_spacing}, y={y_spacing}, z={z_spacing} mm")
 
     def get_x_spacing(self, num_slices):
         if num_slices < 25:

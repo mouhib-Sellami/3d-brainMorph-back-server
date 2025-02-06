@@ -67,8 +67,6 @@ def download_folder(folder_name):
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             if not obj.is_dir:
                 MINIO_CLIENT.fget_object(BUCKET, obj.object_name, file_path)
-                print(f"Downloaded {obj.object_name} to {file_path}")
-        print(temp_dir)
     except S3Error as err:
         print(f"Error occurred: {err}")
         temp_dir = None

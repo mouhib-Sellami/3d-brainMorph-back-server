@@ -47,7 +47,6 @@ class Engine():
         if new and task != None:
             self.queue.put(self.worker_class.get_worker(
                 task=self.task_model.objects.create(job_payload=task.job_payload, task_type=self.task_type.name, delete_when_finish=delete_when_finish), queue=self.queue))
-            print(self.queue.queue)
             return
         if new and task == None:
             self.queue.put(self.worker_class.get_worker(

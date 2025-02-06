@@ -69,6 +69,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class PatientSerializer(serializers.ModelSerializer):
     public_tumor = serializers.SerializerMethodField('get_tumor_public_link')
     public_brain = serializers.SerializerMethodField('get_brain_public_link')
+    public_rapport = serializers.SerializerMethodField('get_rapport_public_link')
     public_combined_brain = serializers.SerializerMethodField(
         'get_combined_brain_public_link')
 
@@ -84,6 +85,9 @@ class PatientSerializer(serializers.ModelSerializer):
 
     def get_combined_brain_public_link(self, obj: models.Patient):
         return os.getenv('MINIO_HOST_PROTOCOL') + os.getenv('MINIO_HOST') + "/" + obj.brain_combine_file_path
+    
+    def get_rapport_public_link(self, obj: models.Patient):
+        return os.getenv('MINIO_HOST_PROTOCOL') + os.getenv('MINIO_HOST') + "/" + obj.rapport_file_path
 
 
 class PatientCreateSerializer(serializers.ModelSerializer):

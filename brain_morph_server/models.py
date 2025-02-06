@@ -125,7 +125,9 @@ class Patient(BaseModel):
     brain_combine_file_path = models.TextField(null=True, default="")
     tumor_file_path = models.TextField(null=True, default="")
     nii_file_path = models.TextField(null=True, default="")
+    rapport_file_path = models.TextField(null=True, default="")
     is_processing = models.BooleanField(default=False)
+
 
 class JobClientArtifact(engineModels.JobBaseModal):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)

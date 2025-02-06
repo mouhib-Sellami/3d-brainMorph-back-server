@@ -25,7 +25,6 @@ def init_model():
             model_path, custom_objects={'iou_coef': iou_coef}, compile=False)
     except TypeError as e:
         print(f"Error loading model: {e}")
-        print("Please ensure that the TensorFlow/Keras version and custom objects are compatible.")
     return model
 
 
