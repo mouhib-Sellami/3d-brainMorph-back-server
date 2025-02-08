@@ -1,4 +1,5 @@
 absl-py @ file:///C:/b/abs_14wchyjaia/croot/absl-py_1714140489450/work
+aggdraw==1.3.19
 aiohappyeyeballs @ file:///C:/b/abs_e9fm5mk6ak/croot/aiohappyeyeballs_1734469429350/work
 aiohttp @ file:///C:/b/abs_d4_gdjffav/croot/aiohttp_1734687146788/work
 aiosignal @ file:///tmp/build/80754af9/aiosignal_1637843061372/work
@@ -52,6 +53,7 @@ executing @ file:///home/conda/feedstock_root/build_artifacts/executing_17252144
 fastjsonschema @ file:///C:/b/abs_4ev90296ly/croot/python-fastjsonschema_1731939386416/work
 flatbuffers @ file:///C:/b/abs_7f2_85svxz/croot/python-flatbuffers_1722369110965/work
 fonttools @ file:///C:/b/abs_4crkswws2h/croot/fonttools_1737040078745/work
+fpdf2==2.8.2
 fqdn==1.5.1
 frozenlist @ file:///C:/b/abs_06ctmb1zeo/croot/frozenlist_1730903113463/work
 fsspec @ file:///C:/b/abs_0428jj7flh/croot/fsspec_1736274691837/work
@@ -59,6 +61,7 @@ gast @ file:///Users/ktietz/demo/mc3/conda-bld/gast_1628588903283/work
 google-auth @ file:///C:/b/abs_059sl2dhu6/croot/google-auth_1715111206543/work
 google-auth-oauthlib @ file:///tmp/build/80754af9/google-auth-oauthlib_1617120569401/work
 google-pasta @ file:///Users/ktietz/demo/mc3/conda-bld/google-pasta_1630577991354/work
+graphviz==0.20.3
 greenlet==3.1.1
 grpcio @ file:///C:/b/abs_ccut8qek12/croot/grpc-suite_1681912611694/work
 gunicorn==23.0.0
@@ -151,6 +154,7 @@ pyasn1 @ file:///Users/ktietz/demo/mc3/conda-bld/pyasn1_1629708007385/work
 pyasn1-modules==0.2.8
 pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
 pycryptodome==3.17
+pydot==3.0.4
 Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1714846767233/work
 PyJWT==2.7.0
 pyOpenSSL @ file:///C:/b/abs_08f38zyck4/croot/pyopenssl_1690225407403/work
@@ -169,6 +173,7 @@ pywin32==308
 pywinpty @ file:///C:/b/abs_6696uz5mru/croot/pywinpty_1733514639618/work
 PyYAML @ file:///C:/b/abs_14xkfs39bx/croot/pyyaml_1728657968772/work
 pyzmq @ file:///C:/b/abs_f3yte6j5yn/croot/pyzmq_1734711069724/work
+qrcode==8.0
 qtconsole @ file:///C:/b/abs_d4j596cmtn/croot/qtconsole_1737590777428/work
 QtPy @ file:///C:/b/abs_derqu__3p8/croot/qtpy_1700144907661/work
 referencing @ file:///C:/b/abs_09f4hj6adf/croot/referencing_1699012097448/work
@@ -215,6 +220,7 @@ unicodedata2 @ file:///C:/b/abs_dfnftvxi4k/croot/unicodedata2_1736543771112/work
 uri-template==1.3.0
 urllib3==2.0.2
 vedo==2024.5.2
+visualkeras==0.1.4
 vtk==9.4.0
 wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1704731205417/work
 webcolors==24.11.1
